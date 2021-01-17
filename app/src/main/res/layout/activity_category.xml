@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ECEFF1"
+    tools:context=".CategoryActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="5dp"
+            android:background="#00695C">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/backButton"
+                    android:layout_width="35dp"
+                    android:layout_height="50dp"
+                    app:srcCompat="@drawable/ic_backspace"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:textSize="20dp"
+                    android:textColor="#fff"
+                    android:text="Task List"/>
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="List Category"
+                android:textSize="30sp"
+                android:gravity="center" />
+
+            <EditText
+                android:id="@+id/category_name2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name Category"
+                android:inputType="text" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/tambah_data2"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_horizontal"
+                android:text="Tambah" />
+
+            <Button
+                android:id="@+id/update_data2"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_horizontal"
+                android:text="Update" />
+
+            <Button
+                android:id="@+id/hapus_data2"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_horizontal"
+                android:text="Hapus" />
+        </LinearLayout>
+
+
+        <ListView
+            android:id="@+id/task_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:choiceMode="singleChoice" />
+
+    </LinearLayout>
+
+</RelativeLayout>

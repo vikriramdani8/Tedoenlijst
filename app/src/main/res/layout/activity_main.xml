@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ECEFF1"
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/linearl1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
@@ -39,22 +42,69 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <Button
-            android:layout_marginTop="30dp"
-            android:id="@+id/button1"
-            android:layout_gravity="center"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-
-        <TextView
-            android:layout_marginTop="30dp"
-            android:id="@+id/mainInfoTv"
-            android:textAlignment="center"
+        <EditText
+            android:id="@+id/category_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Info"/>
+            android:hint="Name Category"
+            android:inputType="text" />
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_below="@+id/linearl1"
+        android:id="@+id/linearl2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/tambah_data"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:text="Tambah" />
+
+        <Button
+            android:id="@+id/update_data"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:text="Update" />
+
+        <Button
+            android:id="@+id/hapus_data"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:text="Hapus" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/list_book"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linearl2"
+        android:choiceMode="singleChoice" />
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="+"
+        android:textSize="40dp"
+        android:textColor="#fff"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/circular_bottom" />
+
+</RelativeLayout>
