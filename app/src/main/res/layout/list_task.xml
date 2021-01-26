@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout android:id="@+id/list_task_item"
+    android:animateLayoutChanges="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="15dp"
+    android:paddingHorizontal="10dp"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/pemisah"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:text="Test" />
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/list_task_item_body"
+        android:background="@drawable/rounded_corner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/cb_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:paddingLeft="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_nameTask"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Test"
+                android:gravity="center_vertical"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/txt_dateTask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Task" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/delete_task"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:visibility="gone"
+            android:layout_gravity="center_vertical"
+            app:srcCompat="@drawable/ic_delete" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.tedoenlijst
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,8 +15,8 @@ import com.example.tedoenlijst.DBHelper.DBHelper
 import com.example.tedoenlijst.Model.Category
 import kotlinx.android.synthetic.main.activity_category.*
 import kotlinx.android.synthetic.main.activity_category.toolbar
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_add_category.view.*
+import com.example.tedoenlijst.MainActivity as main
 
 class CategoryActivity : AppCompatActivity(),  AdapterView.OnItemSelectedListener {
 
@@ -33,7 +34,7 @@ class CategoryActivity : AppCompatActivity(),  AdapterView.OnItemSelectedListene
         refreshData()
 
         backButton.setOnClickListener {
-            onBackPressed()
+           onBackPressed()
         }
     }
 
@@ -50,7 +51,6 @@ class CategoryActivity : AppCompatActivity(),  AdapterView.OnItemSelectedListene
         }
 
         return super.onOptionsItemSelected(item)
-
     }
 
     private fun addNewCategory() {
@@ -79,9 +79,8 @@ class CategoryActivity : AppCompatActivity(),  AdapterView.OnItemSelectedListene
     }
 
     fun refreshData(){
-        lstCategory = db.allCategory
-        val adapter = ListCategoryAdapter(this@CategoryActivity, lstCategory, update_data2,
-            hapus_data2, category_name2, this)
+        lstCategory = db.allCategoryWithTask
+        val adapter = ListCategoryAdapter(this@CategoryActivity, lstCategory, this)
         task_list.adapter = adapter
     }
 
