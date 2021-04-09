@@ -1,6 +1,9 @@
 package com.example.tedoenlijst
 
+import android.app.*
+import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,15 +17,21 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.example.tedoenlijst.Adapter.ListTaskAdapter
 import com.example.tedoenlijst.DBHelper.DBHelper
 import com.example.tedoenlijst.Model.Category
 import com.example.tedoenlijst.Model.Task
+import com.example.tedoenlijst.Receiver.MyAlarmReceiver
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.toolbar_add_category.view.*
+import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 import android.view.Menu as Menu1
 
 open class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -35,6 +44,8 @@ open class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
     internal var lstTask:List<Task> = ArrayList<Task>()
     internal var deleteMode = false
     private var listView: ListView ? = null
+
+    private val CHANNEL_ID = "CHANNEL_ID_01"
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onRestart() {

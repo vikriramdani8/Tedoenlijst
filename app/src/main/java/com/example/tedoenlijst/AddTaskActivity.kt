@@ -1,10 +1,12 @@
 package com.example.tedoenlijst
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
+import android.app.*
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -21,6 +23,8 @@ import kotlinx.android.synthetic.main.activity_category.backButton
 import kotlinx.android.synthetic.main.activity_category.toolbar
 import com.example.tedoenlijst.Model.Category
 import com.example.tedoenlijst.Model.Task
+import com.example.tedoenlijst.Receiver.MyAlarmReceiver
+import io.karn.notify.Notify
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.row_layout.*
 import kotlinx.android.synthetic.main.toolbar_add_category.view.*
@@ -35,6 +39,10 @@ class AddTaskActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
     internal var spinRepeat = 0
     internal var taskDate = ""
     internal var id_category = -1
+
+    internal var c = Calendar.getInstance()
+
+    private val CHANNEL_ID = "CHANNEL_ID_01"
 
     fun View.toggleVisibility() {
         if (visibility == View.VISIBLE) {
@@ -75,7 +83,6 @@ class AddTaskActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
             addNewCategory()
         }
 
-        val c = Calendar.getInstance()
         val dy = arrayOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
         var mL=  arrayOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
         var mS = arrayOf("Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec");
@@ -104,6 +111,7 @@ class AddTaskActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
             val timeSetLis = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
                 c.set(Calendar.HOUR_OF_DAY, hour)
                 c.set(Calendar.MINUTE, minute)
+                c.set(Calendar.SECOND, 0)
                 txt_time.setText(SimpleDateFormat("HH:mm").format(c.time))
                 ic_removeTime.toggleVisibility()
             }
@@ -119,6 +127,8 @@ class AddTaskActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
             if(txt_time.text != null && txt_time.text.toString() != "")
                 ic_removeTime.toggleVisibility()
         }
+
+        createNoticficationChannel()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -193,7 +203,13 @@ class AddTaskActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.getItemId()
         if (id == R.id.add_list_action) {
-            addTask()
+
+            if (txt_nameTask.text.toString() == "" || txt_time.text.toString() == "" || taskDate == ""){
+                Toast.makeText(this, "Field tidak boleh kosong", Toast.LENGTH_SHORT).show()
+            } else {
+                addTask()
+            }
+
             return true
         }
 
@@ -211,7 +227,8 @@ class AddTaskActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
         val task = Task(
             0, idCate, txt_nameTask.text.toString(), taskDate, txt_time.text.toString(), 0, 1
         )
-2
+
+        setAlarm(c, "Waktunya "+txt_nameTask.text.toString())
         db.addTask(task)
         onBackPressed()
     }
@@ -227,5 +244,43 @@ class AddTaskActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
         adapter.setDropDownViewResource(R.layout.toolbar_spinner_item_list)
         spinnerRepeat?.adapter = adapter
         spinnerRepeat?.onItemSelectedListener = this
+    }
+
+    private fun createNoticficationChannel(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Notif Title"
+            val descriptionText = "Notif Desc"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+
+            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun setAlarm(now: Calendar, message: String){
+        val simpleDateFormat = SimpleDateFormat("HH:mm:ss")
+
+        val am = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val calendarList = ArrayList<Calendar>()
+
+        calendarList.add(now)
+        val text_timer = StringBuilder()
+        for (calendar in calendarList){
+            calendar.add(Calendar.SECOND, 0)
+            val requestCode = Random().nextInt()
+            val intent = Intent(this, MyAlarmReceiver::class.java)
+            intent.putExtra("message", message)
+
+            val pi = PendingIntent.getBroadcast(this, requestCode, intent, 0)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pi)
+            else
+                am.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pi)
+
+            text_timer.append(simpleDateFormat.format(calendar.timeInMillis)).append("\n")
+        }
     }
 }
