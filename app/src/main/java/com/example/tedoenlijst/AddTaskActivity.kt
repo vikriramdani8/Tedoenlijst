@@ -1,8 +1,13 @@
 package com.example.tedoenlijst
 
+import android.Manifest
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,6 +21,8 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.tedoenlijst.DBHelper.DBHelper
 import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.android.synthetic.main.activity_category.*
@@ -31,7 +38,7 @@ import kotlinx.android.synthetic.main.toolbar_add_category.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddTaskActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+class AddTaskActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, LocationListener {
 
     internal lateinit var db: DBHelper
     internal var lstCategory:List<Category> = ArrayList<Category>()
@@ -43,6 +50,8 @@ class AddTaskActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
     internal var c = Calendar.getInstance()
 
     private val CHANNEL_ID = "CHANNEL_ID_01"
+    private lateinit var locationManager: LocationManager
+    private val locationPermissionCode = 2
 
     fun View.toggleVisibility() {
         if (visibility == View.VISIBLE) {
@@ -129,6 +138,32 @@ class AddTaskActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
         }
 
         createNoticficationChannel()
+
+        addLoc.setOnClickListener {
+            getLocation();
+        }
+    }
+
+    private fun getLocation() {
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if ((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationPermissionCode)
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5f, this)
+    }
+
+    override fun onLocationChanged(location: Location) {
+        latlong.setText("Latitude: " + location.latitude + "\nLongitude: " + location.longitude);
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == locationPermissionCode) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

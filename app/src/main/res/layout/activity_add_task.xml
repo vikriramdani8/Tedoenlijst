@@ -213,6 +213,28 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/addLoc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="+ Add Location"
+            android:textSize="17dp"
+            android:textColor="#00695C"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:id="@+id/latlong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="17dp"
+            android:textColor="#18  1818"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

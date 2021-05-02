@@ -1,11 +1,17 @@
 package com.example.tedoenlijst
 
+import android.Manifest
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.widget.ArrayAdapter
@@ -17,8 +23,10 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import com.example.tedoenlijst.Adapter.ListTaskAdapter
 import com.example.tedoenlijst.DBHelper.DBHelper
 import com.example.tedoenlijst.Model.Category
@@ -33,8 +41,10 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 import android.view.Menu as Menu1
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
-open class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+open class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener{
     var pos = 0
     var idxArr = 0
 
@@ -45,7 +55,8 @@ open class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
     internal var deleteMode = false
     private var listView: ListView ? = null
 
-    private val CHANNEL_ID = "CHANNEL_ID_01"
+    private lateinit var locationManager: LocationManager
+    private val locationPermissionCode = 2
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onRestart() {
